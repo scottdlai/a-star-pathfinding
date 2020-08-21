@@ -1,7 +1,7 @@
 import pygame
 from node import Node
 from node_type import NodeType
-from constants import NODE_SIZE, BORDER, OFF_SET
+from constants import NODE_SIZE, BORDER, PADDING
 
 
 class Graph:
@@ -148,19 +148,19 @@ class Graph:
         Draws the border between each node.
         """
         # top of the Graph
-        top = OFF_SET
+        top = PADDING
         # bottom of the Graph
-        bottom = NODE_SIZE * len(self.grid) + OFF_SET
+        bottom = NODE_SIZE * len(self.grid) + PADDING
         # left side of the Graph
-        left = OFF_SET
+        left = PADDING
         # right side of the Graph
-        right = NODE_SIZE * len(self.grid[0]) + OFF_SET
+        right = NODE_SIZE * len(self.grid[0]) + PADDING
 
         for i in range(len(self.grid) + 1):
-            y = i * NODE_SIZE + OFF_SET
+            y = i * NODE_SIZE + PADDING
             pygame.draw.line(self.window, BORDER, (left, y), (right, y))
             for j in range(len(self.grid[0]) + 1):
-                x = j * NODE_SIZE + OFF_SET
+                x = j * NODE_SIZE + PADDING
                 pygame.draw.line(self.window, BORDER, (x, top), (x, bottom))
 
     def draw_nodes(self):

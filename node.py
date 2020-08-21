@@ -1,5 +1,5 @@
 import pygame
-from constants import NODE_SIZE, OFF_SET
+from constants import NODE_SIZE, PADDING
 from node_type import NodeType
 
 class Node:
@@ -15,7 +15,7 @@ class Node:
         self.col = col
         # Top left coordinate of this Node on the screen
         # Account for the offset to center the whole graph
-        self.coordinate = (col * NODE_SIZE + OFF_SET, row * NODE_SIZE + OFF_SET)
+        self.coordinate = (col * NODE_SIZE + PADDING, row * NODE_SIZE + PADDING)
         self.node_type = node_type
         self.parent = None
         self.distance = {

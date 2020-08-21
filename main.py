@@ -3,7 +3,7 @@ Maze solver using A* algorithm.
 """
 import pygame
 from graph import Graph
-from constants import WIDTH, HEIGHT, ROWS, COLUMNS, OFF_SET, NODE_SIZE, BACKGROUND
+from constants import WIDTH, HEIGHT, ROWS, COLUMNS, PADDING, NODE_SIZE, BACKGROUND
 
 pygame.init()
 
@@ -16,8 +16,8 @@ WINDOW.fill(BACKGROUND)
 def get_clicked_pos(pos):
     x, y = pos
 
-    row = (y - OFF_SET // 2) // NODE_SIZE
-    col = (x - OFF_SET // 2) // NODE_SIZE
+    row = (y - PADDING) // NODE_SIZE
+    col = (x - PADDING) // NODE_SIZE
 
     return row, col
 
