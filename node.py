@@ -15,7 +15,7 @@ class Node:
         self.col = col
         # Top left coordinate of this Node on the screen
         # Account for the offset to center the whole graph
-        self.coordinate = (col * NODE_SIZE + OFF_SET // 2, row * NODE_SIZE + OFF_SET // 2)
+        self.coordinate = (col * NODE_SIZE + OFF_SET, row * NODE_SIZE + OFF_SET)
         self.node_type = node_type
         self.parent = None
         self.distance = {
