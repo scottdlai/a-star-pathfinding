@@ -27,6 +27,8 @@ def main():
 
     running = True
 
+    start_clicked = end_clicked = False
+
     while running:
         graph.draw()
 
@@ -34,36 +36,36 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
-            shift_down = pygame.key.get_mods() & pygame.KMOD_SHIFT
-
-            ctrl_down = pygame.key.get_mods() & pygame.KMOD_CTRL
-
             alt_down = pygame.key.get_mods() & pygame.KMOD_ALT
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 left_mouse_clicked = event.button == 1
 
-                if left_mouse_clicked and shift_down:
+                if left_mouse_clicked:
                     pos = event.pos
                     row, col = get_clicked_pos(pos)
-                    graph.update_start((row, col))
 
-                elif left_mouse_clicked and ctrl_down:
-                    pos = event.pos
-                    row, col = get_clicked_pos(pos)
-                    graph.update_end((row, col))
+                    if (row, col) == graph.start:
+                        start_clicked = True
+                    elif (row, col) == graph.end:
+                        end_clicked = True
+                    else: 
+                        graph.toggle_wall((row, col))
 
-                elif left_mouse_clicked:
-                    pos = event.pos
-                    row, col = get_clicked_pos(pos)
-                    graph.toggle_wall((row, col))
+            elif event.type == pygame.MOUSEBUTTONUP:
+                start_clicked = False
+                end_clicked = False
 
             # Left mouse down (event.buttons[0])
             elif event.type == pygame.MOUSEMOTION and event.buttons[0]:
                 current = event.pos
                 pos = get_clicked_pos(current)
 
-                if graph.is_empty(pos) or graph.is_wall(pos):
+                if start_clicked:
+                    graph.update_start(pos)
+                elif end_clicked:
+                    graph.update_end(pos)
+                elif graph.is_empty(pos) or graph.is_wall(pos):
                     if alt_down:
                         graph.make_empty(pos)
                     else:
