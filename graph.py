@@ -9,7 +9,7 @@ class Graph:
     Represents a Graph as a grid (2d list).
     """
 
-    def __init__(self, rows: int, collumns: int, window, start=(0, 0), end=None):
+    def __init__(self, rows, collumns, window, start=(0, 0), end=None):
         """
         Construct a new Graph.
         """
@@ -42,30 +42,30 @@ class Graph:
         row, col = node.row, node.col
 
         # top
-        if self.in_grid((row - 1, col)):
+        if self.__in_grid((row - 1, col)):
             neighbors.append(self.grid[row - 1][col])
 
         # left
-        if self.in_grid((row, col - 1)):
+        if self.__in_grid((row, col - 1)):
             neighbors.append(self.grid[row][col - 1])
 
         # right
-        if self.in_grid((row, col + 1)):
+        if self.__in_grid((row, col + 1)):
             neighbors.append(self.grid[row][col + 1])
 
         # bottom
-        if self.in_grid((row + 1, col)):
+        if self.__in_grid((row + 1, col)):
             neighbors.append(self.grid[row + 1][col])
 
         return neighbors
 
-    def in_grid(self, coordinate):
+    def __in_grid(self, coordinate):
         row, col = coordinate
         return (row >= 0 and row < len(self.grid)
                 and col >= 0 and col < len(self.grid[row]))
 
     def update_start(self, new_start):
-        if not self.in_grid(new_start):
+        if not self.__in_grid(new_start):
             return
 
         old_row, old_col = self.start
@@ -75,7 +75,7 @@ class Graph:
         self.grid[row][col].update_type(NodeType.START)
 
     def update_end(self, new_end):
-        if not self.in_grid(new_end):
+        if not self.__in_grid(new_end):
             return
 
         old_row, old_col = self.end
@@ -85,28 +85,29 @@ class Graph:
         self.grid[row][col].update_type(NodeType.END)
 
     def make_wall(self, wall):
-        if not self.in_grid(wall):
+        if not self.__in_grid(wall):
             return
 
         row, col = wall
         self.grid[row][col].update_type(NodeType.WALL)
 
     def make_empty(self, empty):
-        if not self.in_grid(empty):
+        if not self.__in_grid(empty):
             return
 
         row, col = empty
         self.grid[row][col].update_type(NodeType.EMPTY)
 
     def is_wall(self, coordinate):
-        if not self.in_grid(coordinate):
+        if not self.__in_grid(coordinate):
             return False
 
         row, col = coordinate
+
         return self.grid[row][col].is_wall()
 
     def is_empty(self, coordinate):
-        if not self.in_grid(coordinate):
+        if not self.__in_grid(coordinate):
             return False
 
         row, col = coordinate
@@ -121,6 +122,7 @@ class Graph:
     def toggle_wall(self, coordinate):
         if self.is_empty(coordinate):
             self.make_wall(coordinate)
+
         elif self.is_wall(coordinate):
             self.make_empty(coordinate)
 
@@ -139,11 +141,11 @@ class Graph:
         """
         Draws this Graph.
         """
-        self.draw_nodes()
-        self.draw_line()
+        self.__draw_nodes()
+        self.__draw_line()
         pygame.display.update()
 
-    def draw_line(self):
+    def __draw_line(self):
         """
         Draws the border between each node.
         """
@@ -163,7 +165,7 @@ class Graph:
                 x = j * NODE_SIZE + PADDING
                 pygame.draw.line(self.window, BORDER, (x, top), (x, bottom))
 
-    def draw_nodes(self):
+    def __draw_nodes(self):
         """
         Draws the nodes.
         """
