@@ -38,19 +38,24 @@ def main():
 
             alt_down = pygame.key.get_mods() & pygame.KMOD_ALT
 
+            ctrl_down = pygame.key.get_mods() & pygame.KMOD_CTRL
+
             if event.type == pygame.MOUSEBUTTONDOWN:
                 left_mouse_clicked = event.button == 1
 
                 if left_mouse_clicked:
                     pos = event.pos
-                    row, col = get_clicked_pos(pos)
+                    # row, col on the graph
+                    graph_coordinate = get_clicked_pos(pos)
 
-                    if (row, col) == graph.start:
+                    if graph.is_start(graph_coordinate):
                         start_clicked = True
-                    elif (row, col) == graph.end:
+
+                    elif graph.is_end(graph_coordinate):
                         end_clicked = True
-                    else: 
-                        graph.toggle_wall((row, col))
+
+                    else:
+                        graph.toggle_wall(graph_coordinate)
 
             elif event.type == pygame.MOUSEBUTTONUP:
                 start_clicked = False
@@ -61,10 +66,12 @@ def main():
                 current = event.pos
                 pos = get_clicked_pos(current)
 
-                if start_clicked:
+                if start_clicked and not graph.is_end(pos):
                     graph.update_start(pos)
-                elif end_clicked:
+
+                elif end_clicked and not graph.is_start(pos):
                     graph.update_end(pos)
+
                 elif graph.is_empty(pos) or graph.is_wall(pos):
                     if alt_down:
                         graph.make_empty(pos)
@@ -74,7 +81,7 @@ def main():
             elif event.type == pygame.KEYDOWN:
                 c_down = event.key == pygame.K_c
 
-                if c_down and ctrl_down and not alt_down and not shift_down:
+                if c_down and ctrl_down:
                     graph.clear()
 
     pygame.quit()
