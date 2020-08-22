@@ -66,10 +66,10 @@ def main():
                 current = event.pos
                 pos = get_clicked_pos(current)
 
-                if start_clicked and not graph.is_end(pos):
+                if start_clicked and graph.is_empty(pos):
                     graph.update_start(pos)
 
-                elif end_clicked and not graph.is_start(pos):
+                elif end_clicked and graph.is_empty(pos):
                     graph.update_end(pos)
 
                 elif graph.is_empty(pos) or graph.is_wall(pos):
@@ -85,7 +85,7 @@ def main():
                 if c_down and ctrl_down:
                     graph.clear()
                 elif m_down:
-                    graph.generate_maze()
+                    graph.generate_maze(WINDOW)
 
     pygame.quit()
 

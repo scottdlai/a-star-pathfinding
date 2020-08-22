@@ -143,11 +143,11 @@ class Graph:
         self._grid[0][0].update_type(NodeType.START)
         self._grid[self.end[0]][self.end[1]].update_type(NodeType.END)
 
-    def generate_maze(self):
+    def generate_maze(self, window):
         self.clear()
-        self.divide((0, 0), (self.rows - 1, self.collumns - 1))
+        self.divide((0, 0), (self.rows - 1, self.collumns - 1), window)
 
-    def divide(self, top_left, bottom_right):
+    def divide(self, top_left, bottom_right, window):
         tl_row, tl_col = top_left
         br_row, br_col = bottom_right
 
@@ -165,10 +165,11 @@ class Graph:
             wall_col = randint(tl_col + 1, br_col - 1)
 
             # draw walls
+            # To compesate for the gap between walls
             for i in range(-2, height + 2):
                 self.make_wall((tl_row + i, wall_col))
 
-            hole_1_row = randint(tl_row + 1, br_row - 2)
+            hole_1_row = randint(tl_row, br_row - 2)
             hole_2_row = hole_1_row + 1
             hole_3_row = hole_1_row + 2
 
@@ -176,17 +177,20 @@ class Graph:
             self.make_empty((hole_2_row, wall_col))
             self.make_empty((hole_3_row, wall_col))
 
-            self.divide(top_left, (br_row, wall_col - 2))
-            self.divide((tl_row, wall_col + 2), bottom_right)
+            self.draw(window)
+
+            self.divide(top_left, (br_row, wall_col - 2), window)
+            self.divide((tl_row, wall_col + 2), bottom_right, window)
 
         else:
             wall_row = randint(tl_row + 1, br_row - 1)
 
             # draw walls
+            # To compensate for the gap between the walls
             for i in range(-2, width + 2):
                 self.make_wall((wall_row, tl_col + i))
 
-            hole_1_col = randint(tl_col + 1, br_col - 2)
+            hole_1_col = randint(tl_col, br_col - 2)
             hole_2_col = hole_1_col + 1
             hole_3_col = hole_1_col + 2
 
@@ -194,8 +198,10 @@ class Graph:
             self.make_empty((wall_row, hole_2_col))
             self.make_empty((wall_row, hole_3_col))
 
-            self.divide(top_left, (wall_row - 2, br_col))
-            self.divide((wall_row + 2, tl_col), bottom_right)
+            self.draw(window)
+
+            self.divide(top_left, (wall_row - 2, br_col), window)
+            self.divide((wall_row + 2, tl_col), bottom_right, window)
 
     def __choose_orientation(self, width, height):
         if width > height:
