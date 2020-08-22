@@ -1,8 +1,9 @@
 import pygame
+import time
 from random import randrange, randint
 from node import Node
 from node_type import NodeType
-from constants import NODE_SIZE, BORDER, PADDING
+from constants import NODE_SIZE, BORDER, PADDING, SLEEP_SPEEP
 
 HORIZONTAL = 0
 VERTICAL = 1
@@ -179,6 +180,8 @@ class Graph:
 
             self.draw(window)
 
+            time.sleep(SLEEP_SPEEP)
+
             self.divide(top_left, (br_row, wall_col - 2), window)
             self.divide((tl_row, wall_col + 2), bottom_right, window)
 
@@ -199,6 +202,8 @@ class Graph:
             self.make_empty((wall_row, hole_3_col))
 
             self.draw(window)
+
+            time.sleep(SLEEP_SPEEP)
 
             self.divide(top_left, (wall_row - 2, br_col), window)
             self.divide((wall_row + 2, tl_col), bottom_right, window)
