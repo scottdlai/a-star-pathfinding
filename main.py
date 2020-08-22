@@ -30,7 +30,7 @@ def main():
     start_clicked = end_clicked = False
 
     while running:
-        graph.draw()
+        graph.draw(WINDOW)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -80,9 +80,12 @@ def main():
 
             elif event.type == pygame.KEYDOWN:
                 c_down = event.key == pygame.K_c
+                m_down = event.key == pygame.K_m
 
                 if c_down and ctrl_down:
                     graph.clear()
+                elif m_down:
+                    graph.generate_maze()
 
     pygame.quit()
 

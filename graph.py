@@ -1,7 +1,11 @@
 import pygame
+from random import randrange, randint
 from node import Node
 from node_type import NodeType
 from constants import NODE_SIZE, BORDER, PADDING
+
+HORIZONTAL = 0
+VERTICAL = 1
 
 
 class Graph:
@@ -20,8 +24,10 @@ class Graph:
 
         self.start = start
 
-        self.window = window
         self._grid = []
+        self.rows = rows
+        self.collumns = collumns
+
         for row in range(rows):
             self._grid.append([])
             for col in range(collumns):
@@ -61,8 +67,8 @@ class Graph:
 
     def __in_grid(self, coordinate):
         row, col = coordinate
-        return (row >= 0 and row < len(self._grid)
-                and col >= 0 and col < len(self._grid[row]))
+        return (row >= 0 and row < self.rows
+                and col >= 0 and col < self.collumns)
 
     def update_start(self, new_start):
         if not self.__in_grid(new_start):
@@ -84,18 +90,18 @@ class Graph:
         self._grid[old_row][old_col].update_type(NodeType.EMPTY)
         self._grid[row][col].update_type(NodeType.END)
 
-    def make_wall(self, wall):
-        if not self.__in_grid(wall):
+    def make_wall(self, coordinate):
+        if not self.__in_grid(coordinate) or not self.is_empty(coordinate):
             return
 
-        row, col = wall
+        row, col = coordinate
         self._grid[row][col].update_type(NodeType.WALL)
 
-    def make_empty(self, empty):
-        if not self.__in_grid(empty):
+    def make_empty(self, coordinate):
+        if not self.__in_grid(coordinate):
             return
 
-        row, col = empty
+        row, col = coordinate
         self._grid[row][col].update_type(NodeType.EMPTY)
 
     def is_wall(self, coordinate):
@@ -137,35 +143,99 @@ class Graph:
         self._grid[0][0].update_type(NodeType.START)
         self._grid[self.end[0]][self.end[1]].update_type(NodeType.END)
 
-    def draw(self):
+    def generate_maze(self):
+        self.clear()
+        self.divide((0, 0), (self.rows - 1, self.collumns - 1))
+
+    def divide(self, top_left, bottom_right):
+        tl_row, tl_col = top_left
+        br_row, br_col = bottom_right
+
+        width = abs(tl_col - br_col) + 1
+        height = abs(tl_row - br_row) + 1
+
+        MINIMUM_SIZE = 4
+
+        if width < MINIMUM_SIZE or height < MINIMUM_SIZE:
+            return
+
+        orientation = self.__choose_orientation(width, height)
+
+        if orientation == VERTICAL:
+            wall_col = randint(tl_col + 1, br_col - 1)
+
+            # draw walls
+            for i in range(-2, height + 2):
+                self.make_wall((tl_row + i, wall_col))
+
+            hole_1_row = randint(tl_row + 1, br_row - 2)
+            hole_2_row = hole_1_row + 1
+            hole_3_row = hole_1_row + 2
+
+            self.make_empty((hole_1_row, wall_col))
+            self.make_empty((hole_2_row, wall_col))
+            self.make_empty((hole_3_row, wall_col))
+
+            self.divide(top_left, (br_row, wall_col - 2))
+            self.divide((tl_row, wall_col + 2), bottom_right)
+
+        else:
+            wall_row = randint(tl_row + 1, br_row - 1)
+
+            # draw walls
+            for i in range(-2, width + 2):
+                self.make_wall((wall_row, tl_col + i))
+
+            hole_1_col = randint(tl_col + 1, br_col - 2)
+            hole_2_col = hole_1_col + 1
+            hole_3_col = hole_1_col + 2
+
+            self.make_empty((wall_row, hole_1_col))
+            self.make_empty((wall_row, hole_2_col))
+            self.make_empty((wall_row, hole_3_col))
+
+            self.divide(top_left, (wall_row - 2, br_col))
+            self.divide((wall_row + 2, tl_col), bottom_right)
+
+    def __choose_orientation(self, width, height):
+        if width > height:
+            return VERTICAL
+
+        elif width < height:
+            return HORIZONTAL
+
+        else:
+            return randint(HORIZONTAL, VERTICAL)
+
+    def draw(self, window):
         """
         Draws this Graph.
         """
-        self.__draw_nodes()
-        self.__draw_line()
+        self.__draw_nodes(window)
+        self.__draw_line(window)
         pygame.display.update()
 
-    def __draw_line(self):
+    def __draw_line(self, window):
         """
         Draws the border between each node.
         """
         # top of the Graph
         top = PADDING
         # bottom of the Graph
-        bottom = NODE_SIZE * len(self._grid) + PADDING
+        bottom = NODE_SIZE * self.rows + PADDING
         # left side of the Graph
         left = PADDING
         # right side of the Graph
-        right = NODE_SIZE * len(self._grid[0]) + PADDING
+        right = NODE_SIZE * self.collumns + PADDING
 
-        for i in range(len(self._grid) + 1):
+        for i in range(self.rows + 1):
             y = i * NODE_SIZE + PADDING
-            pygame.draw.line(self.window, BORDER, (left, y), (right, y))
-            for j in range(len(self._grid[0]) + 1):
+            pygame.draw.line(window, BORDER, (left, y), (right, y))
+            for j in range(self.collumns + 1):
                 x = j * NODE_SIZE + PADDING
-                pygame.draw.line(self.window, BORDER, (x, top), (x, bottom))
+                pygame.draw.line(window, BORDER, (x, top), (x, bottom))
 
-    def __draw_nodes(self):
+    def __draw_nodes(self, window):
         """
         Draws the nodes.
         """
@@ -173,5 +243,5 @@ class Graph:
             for node in row:
                 color = node.node_type.value
                 x, y = node.coordinate
-                pygame.draw.rect(self.window, color,
+                pygame.draw.rect(window, color,
                                  (x, y, NODE_SIZE, NODE_SIZE))
