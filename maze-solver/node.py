@@ -42,9 +42,14 @@ class Node:
         return self.node_type is NodeType.EMPTY
 
     def is_visited(self):
-        """Returns if this Node is visited"""
+        """Returns if this Node is visited."""
 
         return self.node_type is NodeType.VISITED
+
+    def is_path(self):
+        """Returns if this Node is a path Node."""
+
+        return self.node_type is NodeType.PATH
 
     def visits(self):
         """Set this Node as visited"""
@@ -77,11 +82,4 @@ class Node:
         pygame.draw.rect(window, color, (x, y, NODE_SIZE, NODE_SIZE))
 
     def __lt__(self, other):
-        if self.f_score < other.f_score:
-            return True
-        
-        elif self.f_score == other.f_score:
-            return self.h_score < other.h_score
-        
-        else:
-            return False
+        return True

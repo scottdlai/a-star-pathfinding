@@ -172,6 +172,22 @@ class Graph:
         row, col = coordinate
         return self._grid[row][col]
 
+    def get_grid(self):
+        """Returns the grid of this graph."""
+
+        return self._grid
+
+    def clear_path(self):
+        """
+        Resets the boards by making all visited Node and path Node into empty 
+        node.
+        """
+
+        for row in self._grid:
+            for node in row:
+                if node.is_path() or node.is_visited():
+                    node.update_type(NodeType.EMPTY)
+
     def clear(self):
         """
         Resets the boards by making all nodes empty and set the start Node at

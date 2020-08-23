@@ -36,6 +36,8 @@ def main():
 
     start_clicked = end_clicked = False
 
+    has_searched = False
+
     while running:
         graph.draw(WINDOW)
 
@@ -73,11 +75,17 @@ def main():
                 current = event.pos
                 pos = get_clicked_pos(current)
 
-                if start_clicked and graph.is_empty(pos):
+                if start_clicked and not graph.is_wall(pos):
                     graph.update_start(pos)
+                    if has_searched:
+                        graph.clear_path()
+                        a_star(graph, graph.get_start_node(), graph.get_end_node())
 
-                elif end_clicked and graph.is_empty(pos):
+                elif end_clicked and not graph.is_wall(pos):
                     graph.update_end(pos)
+                    if has_searched:
+                        graph.clear_path()
+                        a_star(graph, graph.get_start_node(), graph.get_end_node())
 
                 elif graph.is_empty(pos) or graph.is_wall(pos):
                     if alt_down:
@@ -92,14 +100,19 @@ def main():
 
                 if c_down and ctrl_down:
                     graph.clear()
+                    has_searched = False
 
                 elif m_down:
                     generate_maze(graph, lambda: graph.draw(WINDOW))
+                    has_searched = False
 
                 elif s_down:
+                    graph.clear_path()
                     a_star(graph, graph.get_start_node(),
                                    graph.get_end_node(),
                                    lambda: graph.draw(WINDOW))
+                    has_searched = True
+
     pygame.quit()
 
 

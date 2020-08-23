@@ -4,14 +4,23 @@ from node_type import NodeType
 
 FAILURE = []
 
-def a_star(graph, start_node, end_node, draw):
+def a_star(graph, start_node, end_node, draw=lambda: None, h=None):
+    if h is None:
+        h = lambda n: abs(end_node.row - n.row) + abs(end_node.col - n.col)
+
+    if draw is None:
+        draw = lambda: None
+
     open_set = PriorityQueue()
 
-    start_node.g_score = 0
-    start_node.h_score = 0
-    start_node.f_score = 0
+    g_score = {node: float("inf") for row in graph.get_grid() for node in row}
 
-    open_set.put((start_node.f_score, start_node))
+    f_score = {node: float("inf") for row in graph.get_grid() for node in row}
+
+    g_score[start_node] = 0
+    f_score[start_node] = h(start_node)
+
+    open_set.put((f_score[start_node], start_node))
 
     while not open_set.empty():
         # Since Queue.get() returns a pair of (priority, item)
@@ -27,19 +36,18 @@ def a_star(graph, start_node, end_node, draw):
                 continue
 
             # since 1 is the weight between every node in the grid
-            tentative_g_score = current.g_score + 1
+            tentative_g_score = g_score[current] + 1
 
-            if tentative_g_score < neighbor.g_score:
+            if tentative_g_score < g_score[neighbor]:
                 neighbor.update_parent(current)
 
-                neighbor.g_score = tentative_g_score
-                neighbor.h_score = h(neighbor, end_node)
-                neighbor.f_score = neighbor.g_score + neighbor.h_score
+                g_score[neighbor] = tentative_g_score
+                f_score[neighbor] = g_score[neighbor] + h(neighbor)
 
                 draw()
 
                 if not neighbor.is_visited():
-                    open_set.put((neighbor.f_score, neighbor))
+                    open_set.put((f_score[neighbor], neighbor))
 
     return FAILURE
 
@@ -55,5 +63,3 @@ def resconstruct_path(current, draw):
 
     return total_path
 
-def h(node, end):
-    return abs(end.row - node.row) + abs(end.col - node.col)
