@@ -14,6 +14,11 @@ WINDOW.fill(BACKGROUND)
 
 
 def get_clicked_pos(pos):
+    """
+    Returns the (row, col) pair on the graph from the specified (x, y) on the
+    screen.
+    """
+
     x, y = pos
 
     row = (y - PADDING) // NODE_SIZE

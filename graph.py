@@ -10,14 +10,11 @@ VERTICAL = 1
 
 
 class Graph:
-    """
-    Represents a Graph as a grid (2d list).
-    """
+    """Represents a Graph as a grid (2d list)."""
 
     def __init__(self, rows, collumns, window, start=(0, 0), end=None):
-        """
-        Construct a new Graph.
-        """
+        """Construct a new Graph."""
+
         if end is None:
             self.end = (rows - 1, collumns - 1)
         else:
@@ -42,9 +39,8 @@ class Graph:
                 self._grid[row].append(Node(row, col, node_type))
 
     def get_neighbors(self, node: Node):
-        """
-        Returns the neighbors of the specified Node
-        """
+        """Returns the neighbors of the specified Node."""
+
         neighbors = []
         row, col = node.row, node.col
 
@@ -67,11 +63,18 @@ class Graph:
         return neighbors
 
     def __in_grid(self, coordinate):
+        """
+        Returns if the specified coordinate (row, col) is in this graph's
+        boundary.
+        """
+
         row, col = coordinate
         return (row >= 0 and row < self.rows
                 and col >= 0 and col < self.collumns)
 
     def update_start(self, new_start):
+        """Makes the Node at the specified (row, col) as the start Node."""
+
         if not self.__in_grid(new_start):
             return
 
@@ -82,6 +85,8 @@ class Graph:
         self._grid[row][col].update_type(NodeType.START)
 
     def update_end(self, new_end):
+        """Makes the Node at the specified (row, col) as the end Node."""
+
         if not self.__in_grid(new_end):
             return
 
@@ -92,6 +97,8 @@ class Graph:
         self._grid[row][col].update_type(NodeType.END)
 
     def make_wall(self, coordinate):
+        """Makes the Node at the specified (row, col) as a wall Node."""
+
         if not self.__in_grid(coordinate) or not self.is_empty(coordinate):
             return
 
@@ -99,6 +106,8 @@ class Graph:
         self._grid[row][col].update_type(NodeType.WALL)
 
     def make_empty(self, coordinate):
+        """Makes the Node at the specified (row, col) as an empty Node."""
+
         if not self.__in_grid(coordinate):
             return
 
@@ -106,6 +115,8 @@ class Graph:
         self._grid[row][col].update_type(NodeType.EMPTY)
 
     def is_wall(self, coordinate):
+        """Returns if the Node at the specified (row, col) is a wall."""
+
         if not self.__in_grid(coordinate):
             return False
 
@@ -114,6 +125,8 @@ class Graph:
         return self._grid[row][col].is_wall()
 
     def is_empty(self, coordinate):
+        """Returns if the Node at the specified (row, col) is empty."""
+
         if not self.__in_grid(coordinate):
             return False
 
@@ -121,12 +134,21 @@ class Graph:
         return self._grid[row][col].is_empty()
 
     def is_start(self, coordinate):
+        """Returns if the Node at the specified (row, col) is a start Node."""
+
         return coordinate == self.start
 
     def is_end(self, coordinate):
+        """Returns if the Node at the specified (row, col) is an end Node."""
+
         return coordinate == self.end
 
     def toggle_wall(self, coordinate):
+        """
+        Makes the Node at the specified (row, col) empty if it's a wall;
+        otherwise a wall.
+        """
+
         if self.is_empty(coordinate):
             self.make_wall(coordinate)
 
@@ -134,6 +156,11 @@ class Graph:
             self.make_empty(coordinate)
 
     def clear(self):
+        """
+        Resets the boards by making all nodes empty and set the start Node at
+        top left corner and end Node at bottom right corner.
+        """
+
         self.start = (0, 0)
         self.end = (len(self._grid) - 1, len(self._grid[0]) - 1)
 
@@ -145,10 +172,17 @@ class Graph:
         self._grid[self.end[0]][self.end[1]].update_type(NodeType.END)
 
     def generate_maze(self, window):
+        """
+        Makes this graph into a maze using the Recursive Division Algorithm and
+        draws the graph on the specified window.
+        """
+
         self.clear()
         self.divide((0, 0), (self.rows - 1, self.collumns - 1), window)
 
     def divide(self, top_left, bottom_right, window):
+        """Recursive Division Algorithm to generate maze."""
+
         tl_row, tl_col = top_left
         br_row, br_col = bottom_right
 
@@ -207,6 +241,8 @@ class Graph:
             self.divide((wall_row + 2, tl_col), bottom_right, window)
 
     def __choose_orientation(self, width, height):
+        """Helper function to decide which orientation to draw the wall."""
+
         if width > height:
             return VERTICAL
 
@@ -217,17 +253,15 @@ class Graph:
             return randint(HORIZONTAL, VERTICAL)
 
     def draw(self, window):
-        """
-        Draws this Graph.
-        """
+        """Draws this Graph on the specified window."""
+
         self.__draw_nodes(window)
         self.__draw_line(window)
         pygame.display.update()
 
     def __draw_line(self, window):
-        """
-        Draws the border between each node.
-        """
+        """Draws the border between each node on the specified window."""
+
         # top of the Graph
         top = PADDING
         # bottom of the Graph
@@ -245,9 +279,8 @@ class Graph:
                 pygame.draw.line(window, BORDER, (x, top), (x, bottom))
 
     def __draw_nodes(self, window):
-        """
-        Draws the nodes.
-        """
+        """Draws the nodes of this graph on the specified window."""
+
         for row in self._grid:
             for node in row:
                 node.draw(window)
