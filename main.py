@@ -3,6 +3,7 @@ Maze solver using A* algorithm.
 """
 import pygame
 from graph import Graph
+from maze import generate_maze
 from constants import WIDTH, HEIGHT, ROWS, COLUMNS, PADDING, NODE_SIZE, BACKGROUND
 
 pygame.init()
@@ -90,7 +91,7 @@ def main():
                 if c_down and ctrl_down:
                     graph.clear()
                 elif m_down:
-                    graph.generate_maze(WINDOW)
+                    generate_maze(graph, lambda: graph.draw(WINDOW))
 
     pygame.quit()
 
