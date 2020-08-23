@@ -64,3 +64,8 @@ class Node:
         Updates the distance of this Node.
         """
         self.distance = new_distance
+    
+    def draw(self, window):
+        color = self.node_type.value
+        x, y = self.coordinate
+        pygame.draw.rect(window, color, (x, y, NODE_SIZE, NODE_SIZE))
