@@ -11,7 +11,11 @@ def a_star(graph, start_node, end_node, draw=lambda: None, h=None):
     if draw is None:
         draw = lambda: None
 
+    graph.clear_path()
+
     open_set = PriorityQueue()
+
+    came_from = {}
 
     g_score = {node: float("inf") for row in graph.get_grid() for node in row}
 
@@ -29,7 +33,7 @@ def a_star(graph, start_node, end_node, draw=lambda: None, h=None):
         current.visits()
 
         if current is end_node:
-            return resconstruct_path(end_node.parent, draw)
+            return resconstruct_path(came_from, start_node, current, draw)
 
         for neighbor in graph.get_neighbors(current):
             if neighbor.is_wall():
@@ -39,7 +43,7 @@ def a_star(graph, start_node, end_node, draw=lambda: None, h=None):
             tentative_g_score = g_score[current] + 1
 
             if tentative_g_score < g_score[neighbor]:
-                neighbor.update_parent(current)
+                came_from[neighbor] = current
 
                 g_score[neighbor] = tentative_g_score
                 f_score[neighbor] = g_score[neighbor] + h(neighbor)
@@ -52,13 +56,15 @@ def a_star(graph, start_node, end_node, draw=lambda: None, h=None):
     return FAILURE
 
 
-def resconstruct_path(current, draw):
-    total_path = []
+def resconstruct_path(came_from, start, end, draw):
+    current = came_from[end]
 
-    while current.parent is not None:
+    total_path = [current]
+
+    while current is not start:
         total_path.append(current)
         current.update_type(NodeType.PATH)
-        current = current.parent
+        current = came_from[current]
         draw()
 
     return total_path

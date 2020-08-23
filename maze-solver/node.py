@@ -16,10 +16,6 @@ class Node:
         self.coordinate = (col * NODE_SIZE + PADDING,
                            row * NODE_SIZE + PADDING)
         self.node_type = node_type
-        self.parent = None
-        self.g_score = float("inf")
-        self.h_score = float("inf")
-        self.f_score = float("inf")
 
     def is_wall(self):
         """Returns if this node is a wall."""
@@ -62,17 +58,7 @@ class Node:
     def update_type(self, new_type):
         """Changes the type of this Node."""
 
-        if not new_type is NodeType.VISITED:
-            self.g_score = float("inf")
-            self.h_score = float("inf")
-            self.f_score = float("inf")
-
         self.node_type = new_type
-
-    def update_parent(self, new_parent):
-        """Changes the parent of this Node."""
-
-        self.parent = new_parent
 
     def draw(self, window):
         """Draws this Node on the specified window."""

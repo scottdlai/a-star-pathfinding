@@ -77,14 +77,14 @@ def main():
 
                 if start_clicked and not graph.is_wall(pos):
                     graph.update_start(pos)
+
                     if has_searched:
-                        graph.clear_path()
                         a_star(graph, graph.get_start_node(), graph.get_end_node())
 
                 elif end_clicked and not graph.is_wall(pos):
                     graph.update_end(pos)
+
                     if has_searched:
-                        graph.clear_path()
                         a_star(graph, graph.get_start_node(), graph.get_end_node())
 
                 elif graph.is_empty(pos) or graph.is_wall(pos):
@@ -107,7 +107,6 @@ def main():
                     has_searched = False
 
                 elif s_down:
-                    graph.clear_path()
                     a_star(graph, graph.get_start_node(),
                                    graph.get_end_node(),
                                    lambda: graph.draw(WINDOW))
