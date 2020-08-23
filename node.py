@@ -57,6 +57,11 @@ class Node:
     def update_type(self, new_type):
         """Changes the type of this Node."""
 
+        if not new_type is NodeType.VISITED:
+            self.g_score = float("inf")
+            self.h_score = float("inf")
+            self.f_score = float("inf")
+
         self.node_type = new_type
 
     def update_parent(self, new_parent):
@@ -64,14 +69,19 @@ class Node:
 
         self.parent = new_parent
 
-    def update_distance(self, new_distance):
-        """Updates the distance of this Node."""
-
-        self.distance = new_distance
-
     def draw(self, window):
         """Draws this Node on the specified window."""
 
         color = self.node_type.value
         x, y = self.coordinate
         pygame.draw.rect(window, color, (x, y, NODE_SIZE, NODE_SIZE))
+
+    def __lt__(self, other):
+        if self.f_score < other.f_score:
+            return True
+        
+        elif self.f_score == other.f_score:
+            return self.h_score < other.h_score
+        
+        else:
+            return False

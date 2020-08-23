@@ -153,6 +153,25 @@ class Graph:
         elif self.is_wall(coordinate):
             self.make_empty(coordinate)
 
+    def get_start_node(self):
+        """Gets the start Node of this Graph."""
+
+        return self.get(self.start)
+
+    def get_end_node(self):
+        """Gets the end Node of this Graph."""
+
+        return self.get(self.end)
+
+    def get(self, coordinate):
+        """Gets the Node at the specified (row, col)."""
+
+        if not self.__in_grid(coordinate):
+            return
+        
+        row, col = coordinate
+        return self._grid[row][col]
+
     def clear(self):
         """
         Resets the boards by making all nodes empty and set the start Node at

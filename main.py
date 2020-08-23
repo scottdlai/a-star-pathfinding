@@ -5,6 +5,7 @@ import pygame
 from graph import Graph
 from maze import generate_maze
 from constants import WIDTH, HEIGHT, ROWS, COLUMNS, PADDING, NODE_SIZE, BACKGROUND
+from a_star import a_star
 
 pygame.init()
 
@@ -87,12 +88,18 @@ def main():
             elif event.type == pygame.KEYDOWN:
                 c_down = event.key == pygame.K_c
                 m_down = event.key == pygame.K_m
+                s_down = event.key == pygame.K_s
 
                 if c_down and ctrl_down:
                     graph.clear()
+
                 elif m_down:
                     generate_maze(graph, lambda: graph.draw(WINDOW))
 
+                elif s_down:
+                    a_star(graph, graph.get_start_node(),
+                                   graph.get_end_node(),
+                                   lambda: graph.draw(WINDOW))
     pygame.quit()
 
 
