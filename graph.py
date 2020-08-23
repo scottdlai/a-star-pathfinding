@@ -162,6 +162,8 @@ class Graph:
 
         orientation = self.__choose_orientation(width, height)
 
+        time.sleep(SLEEP_SPEEP)
+
         if orientation == VERTICAL:
             wall_col = randint(tl_col + 1, br_col - 1)
 
@@ -179,8 +181,6 @@ class Graph:
             self.make_empty((hole_3_row, wall_col))
 
             self.draw(window)
-
-            time.sleep(SLEEP_SPEEP)
 
             self.divide(top_left, (br_row, wall_col - 2), window)
             self.divide((tl_row, wall_col + 2), bottom_right, window)
@@ -202,8 +202,6 @@ class Graph:
             self.make_empty((wall_row, hole_3_col))
 
             self.draw(window)
-
-            time.sleep(SLEEP_SPEEP)
 
             self.divide(top_left, (wall_row - 2, br_col), window)
             self.divide((wall_row + 2, tl_col), bottom_right, window)
@@ -252,7 +250,4 @@ class Graph:
         """
         for row in self._grid:
             for node in row:
-                color = node.node_type.value
-                x, y = node.coordinate
-                pygame.draw.rect(window, color,
-                                 (x, y, NODE_SIZE, NODE_SIZE))
+                node.draw(window)
