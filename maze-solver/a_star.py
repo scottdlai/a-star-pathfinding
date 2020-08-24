@@ -32,6 +32,8 @@ def a_star(graph, start_node, end_node, draw=lambda: None, h=None):
 
         current.visits()
 
+        draw()
+
         if current is end_node:
             return resconstruct_path(came_from, start_node, current, draw)
 
@@ -47,8 +49,6 @@ def a_star(graph, start_node, end_node, draw=lambda: None, h=None):
 
                 g_score[neighbor] = tentative_g_score
                 f_score[neighbor] = g_score[neighbor] + h(neighbor)
-
-                draw()
 
                 if not neighbor.is_visited():
                     open_set.put((f_score[neighbor], neighbor))
