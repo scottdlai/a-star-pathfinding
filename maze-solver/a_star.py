@@ -4,12 +4,13 @@ from node_type import NodeType
 
 FAILURE = []
 
-def a_star(graph, start_node, end_node, draw=lambda: None, h=None):
+
+def a_star(graph, start_node, end_node, draw=None, h=None):
     if h is None:
-        h = lambda n: abs(end_node.row - n.row) + abs(end_node.col - n.col)
+        def h(n): return abs(end_node.row - n.row) + abs(end_node.col - n.col)
 
     if draw is None:
-        draw = lambda: None
+        def draw(): return None
 
     graph.clear_path()
 
@@ -70,4 +71,3 @@ def resconstruct_path(came_from, start, end, draw):
         draw()
 
     return total_path
-

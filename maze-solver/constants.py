@@ -5,5 +5,4 @@ PADDING = NODE_SIZE * 2
 ROWS = (HEIGHT - 2 * PADDING) // NODE_SIZE 
 COLUMNS = (WIDTH - 2 * PADDING) // NODE_SIZE
 BORDER = (0x00, 0x7e, 0xa7)
-BACKGROUND = (0x00, 0x17, 0x1f)
 SLEEP_SPEEP = 0.1 # amount of miliseconds to wait for animation

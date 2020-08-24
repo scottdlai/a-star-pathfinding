@@ -67,8 +67,7 @@ class Graph:
         """
 
         row, col = coordinate
-        return (row >= 0 and row < self.rows
-                and col >= 0 and col < self.collumns)
+        return 0 <= row < self.rows and 0 <= col < self.collumns
 
     def update_start(self, new_start):
         """Makes the Node at the specified (row, col) as the start Node."""

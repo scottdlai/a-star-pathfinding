@@ -4,12 +4,14 @@ Maze solver using A* algorithm.
 import pygame
 from graph import Graph
 from maze import generate_maze
-from constants import WIDTH, HEIGHT, ROWS, COLUMNS, PADDING, NODE_SIZE, BACKGROUND
+from constants import WIDTH, HEIGHT, ROWS, COLUMNS, PADDING, NODE_SIZE
 from a_star import a_star
+from buttons import Button
 
 pygame.init()
 
 # Set up window
+BACKGROUND = (0x00, 0x17, 0x1f)
 WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Maze solver')
 WINDOW.fill(BACKGROUND)
@@ -30,7 +32,26 @@ def get_clicked_pos(pos):
 
 
 def main():
+    btn_size = (NODE_SIZE * 3, NODE_SIZE)
+
+    clear_btn_color = (0xff, 0x28, 0x00)
+    maze_btn_color = (0x00, 0x34, 0x59)
+    search_btn_color = (0x00, 0xc0, 0x41)
+
     graph = Graph(ROWS, COLUMNS, WINDOW)
+
+    clear_btn = Button(clear_btn_color, PADDING, 0, btn_size, graph.clear)
+    clear_btn.draw(WINDOW)
+
+    maze_btn = Button(maze_btn_color, WIDTH - NODE_SIZE * 5, 0, btn_size,
+                      lambda: generate_maze(graph, lambda: graph.draw(WINDOW)))
+    maze_btn.draw(WINDOW)
+
+    search_btn = Button(search_btn_color, WIDTH / 2 - NODE_SIZE, 0, btn_size,
+                        lambda: a_star(graph, graph.get_start_node(),
+                                       graph.get_end_node(),
+                                       lambda: graph.draw(WINDOW)))
+    search_btn.draw(WINDOW)
 
     running = True
 
@@ -50,6 +71,15 @@ def main():
             ctrl_down = pygame.key.get_mods() & pygame.KMOD_CTRL
 
             if event.type == pygame.MOUSEBUTTONDOWN:
+                if clear_btn.handle_event(event):
+                    has_searched = False
+
+                if maze_btn.handle_event(event):
+                    has_searched = False
+
+                if search_btn.handle_event(event):
+                    has_searched = True
+
                 left_mouse_clicked = event.button == 1
 
                 if left_mouse_clicked:
@@ -75,42 +105,25 @@ def main():
                 current = event.pos
                 pos = get_clicked_pos(current)
 
-                if start_clicked and not graph.is_wall(pos):
+                if start_clicked and not graph.is_wall(pos) and not graph.is_end(pos):
                     graph.update_start(pos)
 
                     if has_searched:
-                        a_star(graph, graph.get_start_node(), graph.get_end_node())
+                        a_star(graph, graph.get_start_node(),
+                               graph.get_end_node())
 
-                elif end_clicked and not graph.is_wall(pos):
+                elif end_clicked and not graph.is_wall(pos) and not graph.is_start(pos):
                     graph.update_end(pos)
 
                     if has_searched:
-                        a_star(graph, graph.get_start_node(), graph.get_end_node())
+                        a_star(graph, graph.get_start_node(),
+                               graph.get_end_node())
 
                 elif graph.is_empty(pos) or graph.is_wall(pos):
                     if alt_down:
                         graph.make_empty(pos)
                     else:
                         graph.make_wall(pos)
-
-            elif event.type == pygame.KEYDOWN:
-                c_down = event.key == pygame.K_c
-                m_down = event.key == pygame.K_m
-                s_down = event.key == pygame.K_s
-
-                if c_down and ctrl_down:
-                    graph.clear()
-                    has_searched = False
-
-                elif m_down:
-                    generate_maze(graph, lambda: graph.draw(WINDOW))
-                    has_searched = False
-
-                elif s_down:
-                    a_star(graph, graph.get_start_node(),
-                                   graph.get_end_node(),
-                                   lambda: graph.draw(WINDOW))
-                    has_searched = True
 
     pygame.quit()
 
