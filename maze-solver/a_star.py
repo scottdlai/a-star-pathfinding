@@ -59,12 +59,14 @@ def a_star(graph, start_node, end_node, draw=lambda: None, h=None):
 def resconstruct_path(came_from, start, end, draw):
     current = came_from[end]
 
-    total_path = [current]
+    total_path = []
 
     while current is not start:
-        total_path.append(current)
-        current.update_type(NodeType.PATH)
+        total_path.insert(0, current)
         current = came_from[current]
+
+    for path in total_path:
+        path.update_type(NodeType.PATH)
         draw()
 
     return total_path
