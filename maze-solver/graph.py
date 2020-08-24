@@ -99,8 +99,12 @@ class Graph:
         if not self.__in_grid(coordinate):
             return
 
-        row, col = coordinate
-        self._grid[row][col].update_type(NodeType.WALL)
+        node = self.get(coordinate)
+        
+        if node.is_start() or node.is_end():
+            return
+
+        node.update_type(NodeType.WALL)
 
     def make_empty(self, coordinate):
         """Makes the Node at the specified (row, col) as an empty Node."""
@@ -108,8 +112,12 @@ class Graph:
         if not self.__in_grid(coordinate):
             return
 
-        row, col = coordinate
-        self._grid[row][col].update_type(NodeType.EMPTY)
+        node = self.get(coordinate)
+
+        if node.is_start() or node.is_end():
+            return
+
+        node.update_type(NodeType.EMPTY)
 
     def is_wall(self, coordinate):
         """Returns if the Node at the specified (row, col) is a wall."""
@@ -117,9 +125,9 @@ class Graph:
         if not self.__in_grid(coordinate):
             return False
 
-        row, col = coordinate
+        node = self.get(coordinate)
 
-        return self._grid[row][col].is_wall()
+        return node.is_wall()
 
     def is_empty(self, coordinate):
         """Returns if the Node at the specified (row, col) is empty."""
@@ -127,8 +135,9 @@ class Graph:
         if not self.__in_grid(coordinate):
             return False
 
-        row, col = coordinate
-        return self._grid[row][col].is_empty()
+        node = self.get(coordinate)
+
+        return node.is_empty()
 
     def is_start(self, coordinate):
         """Returns if the Node at the specified (row, col) is a start Node."""
@@ -146,7 +155,12 @@ class Graph:
         otherwise a wall.
         """
 
-        if self.is_empty(coordinate):
+        if not self.__in_grid(coordinate):
+            return
+
+        node = self.get(coordinate)
+
+        if node.is_empty() or node.is_path() or node.is_visited():
             self.make_wall(coordinate)
 
         elif self.is_wall(coordinate):
