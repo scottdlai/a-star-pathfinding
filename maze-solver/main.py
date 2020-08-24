@@ -35,21 +35,22 @@ def main():
     btn_size = (NODE_SIZE * 3, NODE_SIZE)
 
     clear_btn_color = (0xff, 0x28, 0x00)
-    maze_btn_color = (0x00, 0x34, 0x59)
-    search_btn_color = (0x00, 0xc0, 0x41)
+    maze_btn_color = (0x00, 0xc0, 0x41)
+    search_btn_color = (0x00, 0xa8, 0xe8)
 
     graph = Graph(ROWS, COLUMNS, WINDOW)
 
-    clear_btn = Button(clear_btn_color, PADDING, 0, btn_size, graph.clear)
+    clear_btn = Button(clear_btn_color, PADDING, NODE_SIZE * 0.5, btn_size, graph.clear)
     clear_btn.draw(WINDOW)
 
-    maze_btn = Button(maze_btn_color, WIDTH - NODE_SIZE * 5, 0, btn_size,
+    maze_btn = Button(maze_btn_color, WIDTH - NODE_SIZE * 5, NODE_SIZE * 0.5, btn_size,
                       lambda: generate_maze(graph, lambda: graph.draw(WINDOW)))
     maze_btn.draw(WINDOW)
 
-    search_btn = Button(search_btn_color, WIDTH / 2 - NODE_SIZE, 0, btn_size,
+    search_btn = Button(search_btn_color, (WIDTH - 2 * PADDING) / 2, NODE_SIZE * 0.5,
+                        btn_size,
                         lambda: a_star(graph, graph.get_start_node(),
-                                       graph.get_end_node(),
+                                        graph.get_end_node(),
                                        lambda: graph.draw(WINDOW)))
     search_btn.draw(WINDOW)
 
