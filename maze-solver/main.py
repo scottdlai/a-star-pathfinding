@@ -68,8 +68,6 @@ def main():
 
             alt_down = pygame.key.get_mods() & pygame.KMOD_ALT
 
-            ctrl_down = pygame.key.get_mods() & pygame.KMOD_CTRL
-
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if clear_btn.handle_event(event):
                     has_searched = False
@@ -119,7 +117,7 @@ def main():
                         a_star(graph, graph.get_start_node(),
                                graph.get_end_node())
 
-                elif graph.is_empty(pos) or graph.is_wall(pos):
+                elif not graph.is_start(pos) and not graph.is_end(pos):
                     if alt_down:
                         graph.make_empty(pos)
                     else:

@@ -96,7 +96,7 @@ class Graph:
     def make_wall(self, coordinate):
         """Makes the Node at the specified (row, col) as a wall Node."""
 
-        if not self.__in_grid(coordinate) or not self.is_empty(coordinate):
+        if not self.__in_grid(coordinate):
             return
 
         row, col = coordinate
