@@ -24,7 +24,7 @@ Then run `python3 maze-solver/main.py` to run the application or use
 [`pyinstaller`](https://www.pyinstaller.org) to package the project
 
 ```zsh
-pyinstaller maze-solver/main.py
+pyinstaller -w maze-solver/main.py
 ```
 
 An executable (binary file) can be found in the `dist/` directory.
