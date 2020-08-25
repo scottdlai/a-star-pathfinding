@@ -6,6 +6,8 @@
 
 ### Download from Github releases
 
+WORK IN PROGRESS...
+
 ### Via source
 
 You need to have `pip` and `python >= 3` installed
