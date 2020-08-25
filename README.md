@@ -54,7 +54,7 @@ by clicking the `green button`
 - Clicked on the `blue button` on the top to start running the A* algorithm on
 your grid
 
-- After the algorithm finished, you can also move the start and end node around
+- After the algorithm finished, you can also move the `start node` and `end node` around
 
 ### Reseting the grid
 
