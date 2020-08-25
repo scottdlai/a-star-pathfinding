@@ -17,10 +17,10 @@ git clone https://github.com/scott-dlai/A-Star-pathfinding.git
 
 cd A-Star-pathfinding
 
-pip3 install -r requirements.txt
+pip install -r requirements.txt
 ```
 
-Then run `python3 maze-solver/main.py` to run the application or use 
+Then run `python maze-solver/main.py` to run the application or use 
 [`pyinstaller`](https://www.pyinstaller.org) to package the project
 
 ```zsh
