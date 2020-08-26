@@ -1,7 +1,7 @@
 import pygame
 from node import Node
 from node_type import NodeType
-from constants import NODE_SIZE, BORDER, PADDING, SLEEP_SPEEP
+from constants import NODE_SIZE, BORDER, PADDING
 
 HORIZONTAL = 0
 VERTICAL = 1
