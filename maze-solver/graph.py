@@ -10,7 +10,7 @@ VERTICAL = 1
 class Graph:
     """Represents a Graph as a grid (2d list)."""
 
-    def __init__(self, rows, collumns, window, start=(0, 0), end=None):
+    def __init__(self, rows, collumns, start=(0, 0), end=None):
         """Construct a new Graph."""
 
         if end is None:

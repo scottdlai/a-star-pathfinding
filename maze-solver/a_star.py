@@ -7,10 +7,12 @@ FAILURE = []
 
 def a_star(graph, start_node, end_node, draw=None, h=None):
     if h is None:
-        def h(n): return abs(end_node.row - n.row) + abs(end_node.col - n.col)
+        def h(n):
+            return abs(end_node.row - n.row) + abs(end_node.col - n.col)
 
     if draw is None:
-        def draw(): return None
+        def draw():
+            return None
 
     graph.clear_path()
 

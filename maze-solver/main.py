@@ -11,9 +11,9 @@ from buttons import Button
 pygame.init()
 
 # Set up window
-BACKGROUND = (0x00, 0x17, 0x1f)
+BACKGROUND = (0x00, 0x17, 0x1F)
 WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption('Maze solver')
+pygame.display.set_caption("Maze solver")
 WINDOW.fill(BACKGROUND)
 
 
@@ -34,24 +34,36 @@ def get_clicked_pos(pos):
 def main():
     btn_size = (NODE_SIZE * 3, NODE_SIZE)
 
-    clear_btn_color = (0xff, 0x28, 0x00)
-    maze_btn_color = (0x00, 0xc0, 0x41)
-    search_btn_color = (0x00, 0xa8, 0xe8)
+    clear_btn_color = (0xFF, 0x28, 0x00)
+    maze_btn_color = (0x00, 0xC0, 0x41)
+    search_btn_color = (0x00, 0xA8, 0xE8)
 
-    graph = Graph(ROWS, COLUMNS, WINDOW)
+    graph = Graph(ROWS, COLUMNS)
 
     clear_btn = Button(clear_btn_color, PADDING, NODE_SIZE * 0.5, btn_size, graph.clear)
     clear_btn.draw(WINDOW)
 
-    maze_btn = Button(maze_btn_color, WIDTH - NODE_SIZE * 5, NODE_SIZE * 0.5, btn_size,
-                      lambda: generate_maze(graph, lambda: graph.draw(WINDOW)))
+    maze_btn = Button(
+        maze_btn_color,
+        WIDTH - NODE_SIZE * 5,
+        NODE_SIZE * 0.5,
+        btn_size,
+        lambda: generate_maze(graph, lambda: graph.draw(WINDOW)),
+    )
     maze_btn.draw(WINDOW)
 
-    search_btn = Button(search_btn_color, (WIDTH - 2 * PADDING) / 2, NODE_SIZE * 0.5,
-                        btn_size,
-                        lambda: a_star(graph, graph.get_start_node(),
-                                        graph.get_end_node(),
-                                       lambda: graph.draw(WINDOW)))
+    search_btn = Button(
+        search_btn_color,
+        (WIDTH - 2 * PADDING) / 2,
+        NODE_SIZE * 0.5,
+        btn_size,
+        lambda: a_star(
+            graph,
+            graph.get_start_node(),
+            graph.get_end_node(),
+            lambda: graph.draw(WINDOW),
+        ),
+    )
     search_btn.draw(WINDOW)
 
     running = True
@@ -108,15 +120,13 @@ def main():
                     graph.update_start(pos)
 
                     if has_searched:
-                        a_star(graph, graph.get_start_node(),
-                               graph.get_end_node())
+                        a_star(graph, graph.get_start_node(), graph.get_end_node())
 
                 elif end_clicked and not graph.is_wall(pos) and not graph.is_start(pos):
                     graph.update_end(pos)
 
                     if has_searched:
-                        a_star(graph, graph.get_start_node(),
-                               graph.get_end_node())
+                        a_star(graph, graph.get_start_node(), graph.get_end_node())
 
                 elif not graph.is_start(pos) and not graph.is_end(pos):
                     if alt_down:
