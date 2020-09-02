@@ -14,9 +14,9 @@ You can download the executable (binary) files directly from the
 You need to have `pip` and `python >= 3` installed
 
 ```zsh
-git clone https://github.com/scott-dlai/a-Star-pathfinding.git
+git clone https://github.com/scott-dlai/a-star-pathfinding.git
 
-cd a-Star-pathfinding
+cd a-star-pathfinding
 
 pip install -r requirements.txt
 ```
