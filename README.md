@@ -6,7 +6,8 @@
 
 ### Download from Github releases
 
-WORK IN PROGRESS...
+You can download the executable (binary) files directly from the 
+[Github's release tab.](https://github.com/scott-dlai/a-star-pathfinding/releases)
 
 ### Via source
 
