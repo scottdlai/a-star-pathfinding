@@ -36,9 +36,9 @@ An executable (binary file) can be found in the `dist/` directory.
 
 - `Start node` is represented by a green rectangle 
 
-- `End node` is represented by a red rectangle.
+- `End node` is represented by a red rectangle
 
-- `Walls` are represented by dark blue rectangles.
+- `Walls` are represented by dark blue rectangles
 
 - `Visited nodes` are represented by light blue rectangles
 
@@ -58,13 +58,13 @@ key on Mac) to clear the `walls`
 - You can let the computer generates a maze using the `recursive division method`
 by clicking the `green button`
 
-### Solving
+### Solving the maze
 
 - Clicked on the `blue button` on the top to start running the A* algorithm on
 your grid
 
 - After the algorithm finished, you can also move the `start node` and `end node` around
 
-### Reseting the grid
+### Clearing the maze
 
 - Clicked on the `red button` on the top to clear the grid
