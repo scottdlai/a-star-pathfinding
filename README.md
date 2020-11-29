@@ -6,7 +6,7 @@
 
 ### Download from Github releases
 
-You can download the executable (binary) files directly from the 
+You can download the executable (binary) files directly from the
 [Github's release tab.](https://github.com/scott-dlai/a-star-pathfinding/releases)
 
 ### Via source
@@ -21,7 +21,7 @@ cd a-star-pathfinding
 pip install -r requirements.txt
 ```
 
-Then run `python maze-solver/main.py` to run the application or use 
+Then run `python maze-solver/main.py` to run the application or use
 [`pyinstaller`](https://www.pyinstaller.org) to package the project
 
 ```zsh
@@ -34,7 +34,7 @@ An executable (binary file) can be found in the `dist/` directory.
 
 ### Symbols
 
-- `Start node` is represented by a green rectangle 
+- `Start node` is represented by a green rectangle
 
 - `End node` is represented by a red rectangle
 
