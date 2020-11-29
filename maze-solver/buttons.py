@@ -9,7 +9,7 @@ class Button:
         self.rect = (x, y, width, height)
         self.event_handler = event_handler
         self.color = color
-    
+
     def draw(self, window):
         pygame.draw.rect(window, self.color, self.rect)
 
@@ -24,7 +24,7 @@ class Button:
 
         if not self._is_inside_button(event.pos):
             return False
-        
+
         self.event_handler()
 
         return True
