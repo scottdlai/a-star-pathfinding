@@ -100,7 +100,7 @@ class Graph:
             return
 
         node = self.get(coordinate)
-        
+
         if node.is_start() or node.is_end():
             return
 
@@ -181,7 +181,7 @@ class Graph:
 
         if not self.__in_grid(coordinate):
             return
-        
+
         row, col = coordinate
         return self._grid[row][col]
 
@@ -192,7 +192,7 @@ class Graph:
 
     def clear_path(self):
         """
-        Resets the boards by making all visited Node and path Node into empty 
+        Resets the boards by making all visited Node and path Node into empty
         node.
         """
 
